@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_geocoder/geocoder.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart' hide Path;
+import 'package:test_hackaton/util/marker.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class MapPage extends StatefulWidget {
@@ -14,10 +15,11 @@ class MapPage extends StatefulWidget {
 LatLng point = LatLng(56.9972, 40.9714);
 MapController mapController = MapController();
 double _markerSize = 50;
-
+ List<Marker> listMarker = [];
 class _MapPageState extends State<MapPage> {
   @override
   void initState() {
+   
     super.initState();
     // mapController = MapController();
     // _markerSize = 200.0; // Default marker size
@@ -41,6 +43,7 @@ class _MapPageState extends State<MapPage> {
         _markerSize = 200.0;
       } else
         _markerSize = 300.0;
+        _markerSize = _markerSize;
     });
   }
 
@@ -49,7 +52,133 @@ class _MapPageState extends State<MapPage> {
     double long = 49.5;
     double lat = -0.09;
     var location = [];
+listMarker = [
+  Marker(
+              anchorPos: AnchorPos.align(AnchorAlign.top),
+              rotateAlignment: AlignmentGeometry.lerp(
+                  Alignment.bottomCenter, Alignment.bottomCenter, 0),
+              rotate: true,
+              // width: 300.0,
+              // height: 300.0,
+              width: _markerSize,
+              height: _markerSize,
 
+              point: LatLng(56.9972, 40.9714),
+              builder: (ctx) => InkWell(
+                onTap: () async{
+                  return await showDialog(context: (context), builder: (context){
+return AlertDialog(
+  title: Text("test"),
+  content: Text("next"),
+);
+                  });
+                },
+                child: Container(
+                  width: _markerSize,
+                  height: _markerSize,
+                  decoration: ShapeDecoration(
+                    color: Colors.white,
+                    shape: _markerSize > 50
+                        ? CustomMarker(size: _markerSize)
+                        : _markerSize == 50
+                            ? RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10))
+                            : CircleBorder(),
+                    shadows: [
+                      BoxShadow(
+                          color: Colors.grey,
+                          // blurRadius: 1.0,
+                          offset: Offset(2, 2)),
+                    ],
+                  ),
+                  child: ClipRRect(
+                      child: Image.network(
+                    "https://fasadnaya-kraska.ru/upload/articles/ru/0_65518000_1625121805_img.jpg",
+                    fit: BoxFit.cover,
+                  ),
+                  borderRadius: BorderRadius.circular(_markerSize > 100 ? 40 : _markerSize == 50 ? 10 : 20),),
+                ),
+              ),
+            ),
+            Marker(
+              anchorPos: AnchorPos.align(AnchorAlign.top),
+              rotateAlignment: AlignmentGeometry.lerp(
+                  Alignment.bottomCenter, Alignment.bottomCenter, 0),
+              rotate: true,
+              // width: 300.0,
+              // height: 300.0,
+              width: _markerSize,
+              height: _markerSize,
+
+              point: LatLng(56.9972, 44.9714),
+              builder: (ctx) => InkWell(
+                child: Container(
+                  width: _markerSize,
+                  height: _markerSize,
+                  decoration: ShapeDecoration(
+                    color: Colors.white,
+                    shape: _markerSize > 50
+                        ? CustomMarker(size: _markerSize)
+                        : _markerSize == 50
+                            ? RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10))
+                            : CircleBorder(),
+                    shadows: [
+                      BoxShadow(
+                          color: Colors.grey,
+                          // blurRadius: 1.0,
+                          offset: Offset(2, 2)),
+                    ],
+                  ),
+                  child: ClipRRect(
+                      child: Image.network(
+                    "https://fasadnaya-kraska.ru/upload/articles/ru/0_65518000_1625121805_img.jpg",
+                    fit: BoxFit.cover,
+                  ),
+                  borderRadius: BorderRadius.circular(_markerSize > 100 ? 40 : _markerSize == 50 ? 10 : 20),),
+                ),
+              ),
+            ),
+            Marker(
+              anchorPos: AnchorPos.align(AnchorAlign.top),
+              rotateAlignment: AlignmentGeometry.lerp(
+                  Alignment.bottomCenter, Alignment.bottomCenter, 0),
+              rotate: true,
+              // width: 300.0,
+              // height: 300.0,
+              width: _markerSize,
+              height: _markerSize,
+
+              point: LatLng(54.9972, 40.9714),
+              builder: (ctx) => InkWell(
+                child: Container(
+                  width: _markerSize,
+                  height: _markerSize,
+                  decoration: ShapeDecoration(
+                    color: Colors.white,
+                    shape: _markerSize > 50
+                        ? CustomMarker(size: _markerSize)
+                        : _markerSize == 50
+                            ? RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10))
+                            : CircleBorder(),
+                    shadows: [
+                      BoxShadow(
+                          color: Colors.grey,
+                          // blurRadius: 1.0,
+                          offset: Offset(2, 2)),
+                    ],
+                  ),
+                  child: ClipRRect(
+                      child: Image.network(
+                    "https://fasadnaya-kraska.ru/upload/articles/ru/0_65518000_1625121805_img.jpg",
+                    fit: BoxFit.cover,
+                  ),
+                  borderRadius: BorderRadius.circular(_markerSize > 100 ? 40 : _markerSize == 50 ? 10 : 20),),
+                ),
+              ),
+            ),
+];
     return Scaffold(
       floatingActionButton: FloatingActionButton(onPressed: (){
        mapController.move(LatLng(56.9972, 40.9714), 10);
@@ -99,87 +228,88 @@ class _MapPageState extends State<MapPage> {
             subdomains: ['a', 'b', 'c'],
             maxNativeZoom: 20),
         MarkerLayer(
-          markers: [
-            Marker(
+          markers: listMarker
+          // [
+      //       Marker(
               
-              anchorPos: AnchorPos.align(AnchorAlign.top),
-              rotateAlignment: AlignmentGeometry.lerp(
-                  Alignment.bottomCenter, Alignment.bottomCenter, 0),
-              rotate: true,
-              // width: 300.0,
-              // height: 300.0,
-              width: _markerSize,
-              height: _markerSize,
+      //         anchorPos: AnchorPos.align(AnchorAlign.top),
+      //         rotateAlignment: AlignmentGeometry.lerp(
+      //             Alignment.bottomCenter, Alignment.bottomCenter, 0),
+      //         rotate: true,
+      //         // width: 300.0,
+      //         // height: 300.0,
+      //         width: _markerSize,
+      //         height: _markerSize,
 
-              point: point,
-              builder: (ctx) => InkWell(
-                child: Container(
-                  width: _markerSize,
-                  height: _markerSize,
-                  decoration: ShapeDecoration(
-                    color: Colors.white,
-                    shape: _markerSize > 50
-                        ? CustomMarker(size: _markerSize)
-                        : _markerSize == 50
-                            ? RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10))
-                            : CircleBorder(),
-                    shadows: [
-                      BoxShadow(
-                          color: Colors.grey,
-                          // blurRadius: 1.0,
-                          offset: Offset(2, 2)),
-                    ],
-                  ),
-                  child: ClipRRect(
-                      child: Image.network(
-                    "https://fasadnaya-kraska.ru/upload/articles/ru/0_65518000_1625121805_img.jpg",
-                    fit: BoxFit.cover,
-                  ),
-                  borderRadius: BorderRadius.circular(_markerSize > 100 ? 40 : _markerSize == 50 ? 10 : 20),),
-                ),
-              ),
-            ),
-            Marker(
-              anchorPos: AnchorPos.align(AnchorAlign.top),
-              rotateAlignment: AlignmentGeometry.lerp(
-                  Alignment.bottomCenter, Alignment.bottomCenter, 0),
-              rotate: true,
-              // width: 300.0,
-              // height: 300.0,
-              width: _markerSize,
-              height: _markerSize,
+      //         point: point,
+      //         builder: (ctx) => InkWell(
+      //           child: Container(
+      //             width: _markerSize,
+      //             height: _markerSize,
+      //             decoration: ShapeDecoration(
+      //               color: Colors.white,
+      //               shape: _markerSize > 50
+      //                   ? CustomMarker(size: _markerSize)
+      //                   : _markerSize == 50
+      //                       ? RoundedRectangleBorder(
+      //                           borderRadius: BorderRadius.circular(10))
+      //                       : CircleBorder(),
+      //               shadows: [
+      //                 BoxShadow(
+      //                     color: Colors.grey,
+      //                     // blurRadius: 1.0,
+      //                     offset: Offset(2, 2)),
+      //               ],
+      //             ),
+      //             child: ClipRRect(
+      //                 child: Image.network(
+      //               "https://fasadnaya-kraska.ru/upload/articles/ru/0_65518000_1625121805_img.jpg",
+      //               fit: BoxFit.cover,
+      //             ),
+      //             borderRadius: BorderRadius.circular(_markerSize > 100 ? 40 : _markerSize == 50 ? 10 : 20),),
+      //           ),
+      //         ),
+      //       ),
+      //       Marker(
+      //         anchorPos: AnchorPos.align(AnchorAlign.top),
+      //         rotateAlignment: AlignmentGeometry.lerp(
+      //             Alignment.bottomCenter, Alignment.bottomCenter, 0),
+      //         rotate: true,
+      //         // width: 300.0,
+      //         // height: 300.0,
+      //         width: _markerSize,
+      //         height: _markerSize,
 
-              point: LatLng(56.925334, 40.973885),
-              builder: (ctx) => InkWell(
-                child: Container(
-                  width: _markerSize,
-                  height: _markerSize,
-                  decoration: ShapeDecoration(
-                    color: Colors.white,
-                    shape: _markerSize > 50
-                        ? CustomMarker(size: _markerSize)
-                        : _markerSize == 50
-                            ? RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10))
-                            : CircleBorder(),
-                    shadows: [
-                      BoxShadow(
-                          color: Colors.grey,
-                          // blurRadius: 1.0,
-                          offset: Offset(2, 2)),
-                    ],
-                  ),
-                  child: ClipRRect(
-                      child: Image.network(
-                    "https://cdn1.ozone.ru/s3/multimedia-0/6108964908.jpg",
-                    fit: BoxFit.cover,
-                  ),
-                  borderRadius: BorderRadius.circular(_markerSize > 100 ? 40 : _markerSize == 50 ? 10 : 20),),
-                ),
-              ),
-            ),
-          ],
+      //         point: LatLng(56.925334, 40.973885),
+      //         builder: (ctx) => InkWell(
+      //           child: Container(
+      //             width: _markerSize,
+      //             height: _markerSize,
+      //             decoration: ShapeDecoration(
+      //               color: Colors.white,
+      //               shape: _markerSize > 50
+      //                   ? CustomMarker(size: _markerSize)
+      //                   : _markerSize == 50
+      //                       ? RoundedRectangleBorder(
+      //                           borderRadius: BorderRadius.circular(10))
+      //                       : CircleBorder(),
+      //               shadows: [
+      //                 BoxShadow(
+      //                     color: Colors.grey,
+      //                     // blurRadius: 1.0,
+      //                     offset: Offset(2, 2)),
+      //               ],
+      //             ),
+      //             child: ClipRRect(
+      //                 child: Image.network(
+      //               "https://cdn1.ozone.ru/s3/multimedia-0/6108964908.jpg",
+      //               fit: BoxFit.cover,
+      //             ),
+      //             borderRadius: BorderRadius.circular(_markerSize > 100 ? 40 : _markerSize == 50 ? 10 : 20),),
+      //           ),
+      //         ),
+      //       ),
+      //     ],
         )
       ],
     ));
