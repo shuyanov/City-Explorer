@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:test_hackaton/util/post.dart';
 
 import '../api/apiAchievements.dart';
+import '../util/geoposition.dart';
 
 
 
@@ -17,6 +18,7 @@ class _PostPageState extends State<PostPage> {
   @override
   void initState(){
     onRefresh();
+    determinePosition();
     super.initState();
   }
   void onRefresh() async {

@@ -17,8 +17,8 @@ class ProfilePage extends StatelessWidget {
               child: Row(
                 children: [
                   CircleAvatar(
-            radius: 40,
-            backgroundColor: Colors.green,
+                    radius: 40,
+                    backgroundColor: Colors.green,
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -40,22 +40,38 @@ class ProfilePage extends StatelessWidget {
             Container(
               height: 80,
               child: FutureBuilder(
-                future: getAchievements(),
-                builder: (context, snapshot) {
-                  return ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: achievements.length,
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding: const EdgeInsets.only(left: 8.0),
-                          child: CircleAvatar(
-                            backgroundColor: Colors.amber[index * 100],
-                            radius: 30,
-                          ),
-                        );
-                      });
-                }
-              ),
+                  future: getAchievements(),
+                  builder: (context, snapshot) {
+                    return achievements == [] ? Center(child: Text("Нет достижений", textAlign: TextAlign.center,)) : ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: achievements.length,
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding: const EdgeInsets.only(left: 8.0),
+                            child: GestureDetector(
+                              onTap: () async {
+                                return await showDialog(
+                                    context: (context),
+                                    builder: (context) {
+                                      return AlertDialog(
+                                        title: Text(achievements[index].name),
+                                        content: Text(achievements[index].description),
+                                        actions: [
+                                          TextButton(onPressed: (){
+                                            Get.back();
+                                          }, child: Text("Ок"))
+                                        ],
+                                      );
+                                    });
+                              },
+                              child: CircleAvatar(
+                                backgroundColor: Colors.amber[index * 100],
+                                radius: 30,
+                              ),
+                            ),
+                          );
+                        });
+                  }),
             ),
             GridView.builder(
               gridDelegate:
