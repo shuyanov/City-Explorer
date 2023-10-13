@@ -2,11 +2,28 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:test_hackaton/util/post.dart';
 
+import '../api/apiAchievements.dart';
 
 
-class PostPage extends StatelessWidget {
+
+class PostPage extends StatefulWidget {
   const PostPage({super.key});
 
+  @override
+  State<PostPage> createState() => _PostPageState();
+}
+
+class _PostPageState extends State<PostPage> {
+  @override
+  void initState() async{
+    onRefresh();
+    super.initState();
+  }
+  void onRefresh() async {
+  
+    await getAchievements();
+  
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
