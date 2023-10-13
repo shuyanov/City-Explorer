@@ -7,6 +7,8 @@ import {
   Delete,
   Param,
   Body,
+  NotFoundException,
+  InternalServerErrorException,
 } from '@nestjs/common';
 import { CreateAchievementDto, UpdateAchievementDto } from './achievements.dto';
 import { AchievementsService } from './achievements.service';
@@ -42,8 +44,19 @@ export class AchievementsController {
   @ApiCreatedResponse({
     description: achievement.GETID_ACHIEVEMENT_DESCRIPTION,
   })
-  findOne(@Param(achievement.ID) id: number) {
-    return this.achievementsService.findOne(id);
+  async findOne(@Param(achievement.ID) id: number) {
+    try {
+      const achievement = await this.achievementsService.findOne(Number(id));
+      if (!achievement) {
+        throw new NotFoundException('Achievement not found');
+      }
+      return achievement;
+    } catch (error) {
+      console.error(error);
+      throw new InternalServerErrorException(
+        'An internal server error occurred.',
+      );
+    }
   }
 
   @Put(`:${achievement.ID}`)
