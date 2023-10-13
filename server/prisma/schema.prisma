@@ -9,6 +9,7 @@ datasource db {
 
 model Users {
   id                Int            @id @default(autoincrement())
+  name              String
   user_photos       Photos[]
   user_achievements Achievements[]
 }
@@ -25,9 +26,17 @@ model Photos {
 }
 
 model Achievements {
-  id          Int    @id @default(autoincrement())
-  name        String
-  description String
-  usersId     Int?
-  Users       Users? @relation(fields: [usersId], references: [id])
+  id            Int            @id @default(autoincrement())
+  name          String
+  description   String
+  usersId       Int?
+  Users         Users?         @relation(fields: [usersId], references: [id])
+  achievementPhotoId Int?
+  achievementPhoto AchievementPhoto? @relation(fields: [achievementPhotoId], references: [id])
+}
+
+model AchievementPhoto {
+  id        Int      @id @default(autoincrement())
+  url_image String   @unique
+  achievements Achievements[]
 }
