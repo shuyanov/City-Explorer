@@ -126,19 +126,19 @@ jobs:
             ${{ runner.os }}-build-
             ${{ runner.os }}-
 
-      - name: 'Components: CI: npm: Prepare token'
+      - name: 'Backend: CI: npm: Prepare token'
         run: echo "//npm.pkg.github.com/:_authToken=${GH_TOKEN}" >> .npmrc
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
       - if: ${{ steps.cache-npm.outputs.cache-hit != 'true' }}
-        name: 'Components: Build: npm: Install dependencies'
+        name: 'Backend: Build: npm: Install dependencies'
         run: npm ci
 
-      - name: 'Components: Build'
+      - name: 'Backend: Build'
         run: npm run build
 
-      - name: 'Components: Release'
+      - name: 'Backend: Release'
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
           NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
