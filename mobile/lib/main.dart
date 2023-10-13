@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:test_hackaton/pages/cameraPage.dart';
 import 'package:test_hackaton/pages/geolocationPage.dart';
 import 'package:test_hackaton/pages/mapPage.dart';
+import 'package:test_hackaton/pages/postPage.dart';
 import 'package:test_hackaton/util/camera/locator.dart';
 
 
@@ -72,7 +73,7 @@ class HomePage extends StatelessWidget {
   
 }
 List<Widget> pages = [
-  GeolocationPage(),
+  PostPage(),
   CameraPage(),
   MapPage(),
   Scaffold(body: Center(child: Text("Профиль"),),)
