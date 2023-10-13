@@ -6,6 +6,8 @@ import 'package:test_hackaton/pages/mapPage.dart';
 import 'package:test_hackaton/pages/postPage.dart';
 import 'package:test_hackaton/util/camera/locator.dart';
 
+import 'pages/profilePage.dart';
+
 
 void main() async{
   
@@ -76,7 +78,7 @@ List<Widget> pages = [
   PostPage(),
   CameraPage(),
   MapPage(),
-  Scaffold(body: Center(child: Text("Профиль"),),)
+  ProfilePage(),
 ];
 List<String> pagesString = [
   "Главная",
