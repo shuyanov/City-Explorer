@@ -30,3 +30,33 @@ List<Achievements> achievements = [];
     }
     
   }
+
+
+ Future postAchievements() async {
+    final url = Uri.parse(
+        "${dotenv.env['DB_URL']}/achievements");
+
+    final response = await http.post(
+      url,
+      body: {
+        ""
+    // "login": login.trim(),
+    // "password": pass.trim(),
+  });
+    try{
+    if (response.statusCode == 200) {
+       achievements = achievementsFromJson(response.body);
+         
+          print(
+              "Successed write ===>>> getAchievements > ${achievements.first.name.toString()}");
+
+          print("getAchievements: ${response.statusCode}");
+      print('Геоданные успешно отправлены на сервер');
+    } else {
+      print('Ошибка при отправке геоданных на сервер');
+    }
+    }catch(e) {
+      print("exeption324: ${e}");
+    }
+    
+  }
