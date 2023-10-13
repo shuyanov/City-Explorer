@@ -21,7 +21,7 @@ export class PhotosController {
 
   @Get(':id')
   async findOne(@Param('id') id: number) {
-    return this.photosService.findOne(id);
+    return this.photosService.findOne(Number(id));
   }
 
   @Post()
@@ -39,6 +39,6 @@ export class PhotosController {
 
   @Delete(':id')
   async remove(@Param('id') id: number) {
-    return this.photosService.remove(id);
+    return this.photosService.remove(Number(id));
   }
 }

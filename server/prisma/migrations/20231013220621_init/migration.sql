@@ -39,12 +39,6 @@ CREATE TABLE "AchievementPhoto" (
 );
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Photos_url_image_key" ON "Photos"("url_image");
-
--- CreateIndex
-CREATE UNIQUE INDEX "Photos_city_key" ON "Photos"("city");
-
--- CreateIndex
 CREATE UNIQUE INDEX "AchievementPhoto_url_image_key" ON "AchievementPhoto"("url_image");
 
 -- AddForeignKey
