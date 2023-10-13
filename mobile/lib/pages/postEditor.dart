@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:test_hackaton/util/geoposition.dart';
 
 import '../api/api.dart';
 
@@ -62,10 +63,10 @@ class _PostEditorState extends State<PostEditor> {
                     String descriptions = 'your_descriptions';
                     double latitude = 42.3601;
                     double longitude = -71.0589;
-                    int userId = 123; // Замените на фактический ID пользователя
-
+                    // int userId = 123; // Замените на фактический ID пользователя
+                    determinePosition();
                     NetworkUtils.sendLocationData(
-                        img, descriptions, latitude, longitude, userId);
+                        img, descriptions, latitude, longitude);
                   },
                   child: Text("Отправить")),
             ),

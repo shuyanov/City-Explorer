@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../api/apiAchievements.dart';
+
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
 
@@ -37,18 +39,23 @@ class ProfilePage extends StatelessWidget {
             ),
             Container(
               height: 80,
-              child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: 10,
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.only(left: 8.0),
-                      child: CircleAvatar(
-                        backgroundColor: Colors.amber[index * 100],
-                        radius: 30,
-                      ),
-                    );
-                  }),
+              child: FutureBuilder(
+                future: getAchievements(),
+                builder: (context, snapshot) {
+                  return ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: achievements.length,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.only(left: 8.0),
+                          child: CircleAvatar(
+                            backgroundColor: Colors.amber[index * 100],
+                            radius: 30,
+                          ),
+                        );
+                      });
+                }
+              ),
             ),
             GridView.builder(
               gridDelegate:
