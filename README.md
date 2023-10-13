@@ -21,3 +21,27 @@ City Adventures - это захватывающее мобильное прил�
 * Насладиться обучающими историческими фактами.
 * Повысить уровень активности и исследовательских навыков.
 * Присоединяйтесь к нам в City Adventures и начните увлекательное путешествие по вашему городу уже сегодня!
+
+## How to start:
+
+### Server:
+1. `cd server`  
+2. `npm ci`
+3. `docker-compose up -d`  
+4. `npx prisma migrate dev --name init` - делаем только один раз  
+5.  `npx prisma generate`  
+6. `npm run start:dev`
+
+
+## Screenshots
+
+<img width="351" alt="image" src="https://github.com/shuyanov/City-Explorer/assets/71666299/cd9fc10d-a68f-4126-90d1-89c0e3c5a64a">
+
+<img width="350" alt="image" src="https://github.com/shuyanov/City-Explorer/assets/71666299/622b3905-d17b-400e-92e1-6fd826ed4a57">
+
+<img width="348" alt="image" src="https://github.com/shuyanov/City-Explorer/assets/71666299/8cf23e37-46c8-4974-8d54-5ccd40180928">
+
+<img width="349" alt="image" src="https://github.com/shuyanov/City-Explorer/assets/71666299/afba7fd1-e6d3-4c46-a6bf-710b70832acd">
+
+
+

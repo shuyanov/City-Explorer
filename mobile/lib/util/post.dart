@@ -19,9 +19,14 @@ class Post extends StatefulWidget {
   State<Post> createState() => _PostState();
 }
 
-bool isLiked = false;
 
 class _PostState extends State<Post> {
+bool isLiked = false;
+  @override
+  void initState() {
+    isLiked = widget.like;
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Material(
