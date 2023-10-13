@@ -55,7 +55,7 @@ class _MapPageState extends State<MapPage> {
     double lat = -0.09;
     var location = [];
     listMarker = [
-
+     
       Marker(
         anchorPos: AnchorPos.align(AnchorAlign.top),
         rotateAlignment: AlignmentGeometry.lerp(
@@ -201,7 +201,7 @@ class _MapPageState extends State<MapPage> {
         ),
       ));
     }
-
+    
     return Scaffold(
         floatingActionButton: FloatingActionButton(
           onPressed: () {
