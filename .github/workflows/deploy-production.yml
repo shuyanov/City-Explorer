@@ -1,0 +1,186 @@
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'server/**'
+
+name: 🚀 Deploy website on push for development environment
+jobs:
+  check-secrets:
+    timeout-minutes: 5
+    runs-on: ubuntu-latest
+    outputs:
+      github-token: ${{ steps.github-token.outputs.defined }}
+    steps:
+      - id: github-token
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        if: "${{ env.GITHUB_TOKEN != '' }}"
+        run: echo "::set-output name=defined::true"
+
+  pre_ci:
+    name: Prepare CI environment
+    timeout-minutes: 5
+    runs-on: ubuntu-latest
+    outputs:
+      commit_message: ${{ steps.get_commit_message.outputs.commit_message }}
+      branch: ${{ steps.extract_branch.outputs.branch }}
+
+    steps:
+      - name: 'Git: Checkout Project'
+        uses: actions/checkout@v2
+        with:
+          #We need to fetch with a depth of 2 for pull_request so we can do HEAD^2
+          fetch-depth: 2
+
+      - name: 'Lint: Commit: Get commit message'
+        id: get_commit_message
+        env:
+          COMMIT_PUSH: ${{ github.event.head_commit.message }}
+        run: |
+          COMMIT_MESSAGE="${COMMIT_PUSH:-$(git log --format=%B -n 1 HEAD^2)}"
+          echo "::set-output name=commit_message::${COMMIT_MESSAGE}"
+
+      - name: 'Lint: Branch: Extract branch name'
+        id: extract_branch
+        run: |
+          TMP_PULL_HEAD_REF="${{ github.head_ref }}"
+          TMP_GITHUB_REF="${GITHUB_REF#refs/heads/}"
+          EXPORT_VALUE=""
+          if [ "${TMP_PULL_HEAD_REF}" != "" ]
+          then
+              EXPORT_VALUE="${TMP_PULL_HEAD_REF}"
+          else
+              EXPORT_VALUE="${TMP_GITHUB_REF}"
+          fi
+          echo "##[set-output name=branch;]${EXPORT_VALUE}"
+
+  test-build:
+    name: 'Backend: Build'
+    timeout-minutes: 5
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./server
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 18
+
+      - name: 'Backend: Build: npm: Manage cache'
+        id: cache-npm
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-node-modules
+        with:
+          path: |
+            ~/.npm
+            **/node_modules
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+
+      - if: ${{ steps.cache-npm.outputs.cache-hit != 'true' }}
+        name: 'Backend: Build: npm: Install dependencies'
+        run: npm ci
+
+      - name: 'Backend: Lint: Get lint results'
+        run: npm run lint
+
+      - name: 'Backend: Build'
+        run: npm run build
+
+  npm-backend-publish:
+    name: 'Components: Release: New version'
+    needs: [test-build, pre_ci]
+    defaults:
+      run:
+        working-directory: ./server
+    timeout-minutes: 5
+    if: ${{ github.ref == 'refs/heads/master' }}
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 18
+
+      - name: 'Backend: Build: npm: Manage cache'
+        id: cache-npm
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-node-modules
+        with:
+          path: |
+            ~/.npm
+            **/node_modules
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+
+      - name: 'Components: CI: npm: Prepare token'
+        run: echo "//npm.pkg.github.com/:_authToken=${GH_TOKEN}" >> .npmrc
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+
+      - if: ${{ steps.cache-npm.outputs.cache-hit != 'true' }}
+        name: 'Components: Build: npm: Install dependencies'
+        run: npm ci
+
+      - name: 'Components: Build'
+        run: npm run build
+
+      - name: 'Components: Release'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: npx semantic-release
+
+  dev-web-deploy:
+    name: 🎉 Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🚚 Get latest code
+        uses: actions/checkout@v3
+
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18.15.0'
+
+      - name: Build frontend
+        run: cd server && npm ci && npm run build
+
+      #- name: Make .env
+      #  run: |
+      #    cd ./application/vaflyahouse.ru
+      #    echo 'VAFLYA_HOUSE_DOMAIN=https://dev.vaflyahouse.ru/' >> .env
+      #    echo 'DB_DRIVER=mysqli' >> .env
+      #    echo 'DB_HOSTNAME=localhost' >> .env
+      #    echo 'DB_USERNAME=dev.vaflyahouse.ru' >> .env
+      #    echo 'DB_PASSWORD=dev.vaflyahouse.ru' >> .env
+      #    echo 'DB_DATABASE=dev.vaflyahouse.ru' >> .env
+      #    echo 'DB_PORT=3306' >> .env
+      #    echo 'DB_PREFIX=oc_' >> .env
+      #    echo 'DB_PROJECT_DIR_NAME=/var/www/vaflyahouse/data/www/dev.vaflyahouse.ru/' >> .env
+      #    cd ../../
+
+      #- name: 📂 Sync files
+      #  uses: sebastianpopp/ftp-action@releases/v2
+      #  with:
+      #    host: ${{ secrets.FTP_UPLOAD_HOST }}
+      #    user: ${{ secrets.FTP_UPLOAD_USER }}
+      #    password: ${{ secrets.FTP_UPLOAD_SECRET }}
+      #    localDir: ./application/vaflyahouse.ru/
+      #    remoteDir: www/dev.vaflyahouse.ru/

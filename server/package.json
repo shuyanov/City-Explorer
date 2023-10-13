@@ -1,10 +1,21 @@
 {
-  "name": "server",
-  "version": "0.0.1",
+  "name": "city-explorer-backend",
+  "version": "0.1.0",
   "description": "",
   "author": "",
   "private": true,
-  "license": "UNLICENSED",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shuyanov/City-Explorer.git"
+  },
+  "bugs": {
+    "url": "https://github.com/shuyanov/City-Explorer/issues"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  },
   "scripts": {
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
@@ -12,13 +23,25 @@
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
-    "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
+    "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --no-fix --max-warnings 0",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
+  "keywords": [
+    "city",
+    "adventure",
+    "exploration"
+  ],
+  "contributors": [
+    "Kozhukhar Vladimir <m1stygit@gmail.com>"
+  ],
+  "authors": [
+    "Kozhukhar Vladimir <m1stygit@gmail.com>"
+  ],
+  "homepage": "https://github.com/shuyanov/City-Explorer/server#readme",
   "dependencies": {
     "@nestjs/common": "^10.0.0",
     "@nestjs/core": "^10.0.0",
@@ -26,8 +49,15 @@
     "@nestjs/passport": "^10.0.2",
     "@nestjs/platform-express": "^10.0.0",
     "@nestjs/swagger": "^7.1.13",
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/commit-analyzer": "^11.0.0",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/github": "^9.2.1",
+    "@semantic-release/npm": "^11.0.0",
+    "@semantic-release/release-notes-generator": "^12.0.0",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.0",
+    "commitlint": "^17.7.2",
     "passport": "^0.6.0",
     "passport-jwt": "^4.0.1",
     "pg": "^8.11.3",
@@ -36,6 +66,8 @@
     "swagger-ui-express": "^5.0.0"
   },
   "devDependencies": {
+    "@commitlint/cli": "^17.7.2",
+    "@commitlint/config-conventional": "^17.7.0",
     "@nestjs/cli": "^10.0.0",
     "@nestjs/schematics": "^10.0.0",
     "@nestjs/testing": "^10.0.0",
@@ -52,6 +84,7 @@
     "jest": "^29.5.0",
     "prettier": "^3.0.0",
     "prisma": "^5.4.2",
+    "semantic-release": "^22.0.5",
     "source-map-support": "^0.5.21",
     "supertest": "^6.3.3",
     "ts-jest": "^29.1.0",
@@ -60,6 +93,48 @@
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.1.3"
   },
+  "plugins": [
+    "@semantic-release/commit-analyzer",
+    "@semantic-release/release-notes-generator",
+    "@semantic-release/changelog",
+    "@semantic-release/github",
+    "@semantic-release/npm",
+    "@semantic-release/git"
+  ],
+  "release": {
+    "prepare": [
+      "@semantic-release/changelog",
+      "@semantic-release/npm",
+      {
+        "path": "@semantic-release/git",
+        "assets": [
+          "package.json",
+          "package-lock.json",
+          "CHANGELOG.md"
+        ],
+        "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
+      }
+    ],
+    "branches": [
+      {
+        "name": "main"
+      }
+    ]
+  },
+  "files": [
+    "README.md",
+    "LICENSE",
+    "dist"
+  ],
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com",
+    "tag": "latest",
+    "access": "public"
+  },
+  "moduleDirectories": [
+    "node_modules",
+    "src"
+  ],
   "jest": {
     "moduleFileExtensions": [
       "js",
