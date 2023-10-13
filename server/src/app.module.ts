@@ -4,7 +4,7 @@ import { AppService } from './app.service';
 import { PrismaService } from './prisma/prisma.service';
 import { UsersModule } from './user/users.module';
 import { PhotosModule } from './photo/photos.module';
-import { AchievementsModule } from './achievement/achievements.module';
+import { AchievementsModule } from './achievement';
 import { SwaggerDocsModule } from './swagger/swagger.module';
 
 @Module({

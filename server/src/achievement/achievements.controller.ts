@@ -11,6 +11,8 @@ import {
 import { CreateAchievementDto, UpdateAchievementDto } from './achievements.dto';
 import { AchievementsService } from './achievements.service';
 import { ApiTags, ApiOperation, ApiCreatedResponse } from '@nestjs/swagger';
+import './achievements.types';
+import { achievement } from './achievements.types';
 
 @ApiTags('achievements')
 @Controller('achievements')
@@ -18,46 +20,46 @@ export class AchievementsController {
   constructor(private readonly achievementsService: AchievementsService) {}
 
   @Post()
-  @ApiOperation({ summary: 'Create a new achievement' })
+  @ApiOperation({ summary: achievement.POST_ACHIEVEMENTS_SUMMARY })
   @ApiCreatedResponse({
-    description: 'The achievement has been successfully created.',
+    description: achievement.POST_ACHIEVEMENTS_DESCRIPTION,
   })
   create(@Body() createAchievementDto: CreateAchievementDto) {
     return this.achievementsService.create(createAchievementDto);
   }
 
   @Get()
-  @ApiOperation({ summary: 'Get a achievements' })
+  @ApiOperation({ summary: achievement.GET_ACHIEVEMENTS_SUMMARY })
   @ApiCreatedResponse({
-    description: 'The achievements has been get.',
+    description: achievement.GET_ACHIEVEMENTS_DESCRIPTION,
   })
   findAll() {
     return this.achievementsService.findAll();
   }
 
   @Get(':id')
-  @ApiOperation({ summary: 'Get a achievement' })
+  @ApiOperation({ summary: achievement.GETID_ACHIEVEMENT_SUMMARY })
   @ApiCreatedResponse({
-    description: 'The achievement has been get.',
+    description: achievement.GETID_ACHIEVEMENT_DESCRIPTION,
   })
-  findOne(@Param('id') id: number) {
+  findOne(@Param(achievement.ID) id: number) {
     return this.achievementsService.findOne(id);
   }
 
-  @Put(':id')
+  @Put(`:${achievement.ID}`)
   update(
-    @Param('id') id: number,
+    @Param(achievement.ID) id: number,
     @Body() updateAchievementDto: UpdateAchievementDto,
   ) {
     return this.achievementsService.update(id, updateAchievementDto);
   }
 
-  @Delete(':id')
-  @ApiOperation({ summary: 'Delete a achievement' })
+  @Delete(`:${achievement.ID}`)
+  @ApiOperation({ summary: achievement.DELETE_ACHIEVEMENT_SUMMARY })
   @ApiCreatedResponse({
-    description: 'The achievement has been successfully deleted.',
+    description: achievement.DELETE_ACHIEVEMENT_DESCRIPTION,
   })
-  remove(@Param('id') id: number) {
+  remove(@Param(`:${achievement.ID}`) id: number) {
     return this.achievementsService.remove(id);
   }
 }
