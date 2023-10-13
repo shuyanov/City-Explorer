@@ -1,0 +1,19 @@
+services:
+  # название сервиса
+  postgres:
+    # образ
+    image: postgres
+    # политика перезапуска
+    restart: on-failure
+    # файл с переменными среды окружения
+    env_file:
+      - .env
+    # порты
+    ports:
+      - 5432:5432
+    # тома для постоянного хранения данных
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+volumes:
+  postgres-data:
