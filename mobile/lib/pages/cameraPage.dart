@@ -59,63 +59,43 @@ class _CameraPageState extends State<CameraPage> {
             color: Colors.black,
             child: Stack(
               children: [
-                Expanded(child: CameraPreview(cameraController)),
-// Center(
-//   child: Container(
-//     width: context.width,
-//     height: context.height,
-//     color: Colors.black.withOpacity(0.8), 
-//     child: Center(
-//       child: Container(
-//         width: context.width,
-//         height: context.width,
-//         decoration: BoxDecoration(
-//           border: Border.all(color: Colors.white, width: 2),
-//           color: Colors.transparent
-//         ),
-//       ),
-//     ),
-//   ),
-// ),
- // Показываем видеопоток с камеры
-          Center(
-            // left: 0,
-            // top: MediaQuery.of(context).size.height / 2 - MediaQuery.of(context).size.width / 2,
-            child: ClipRect(
-              child: Container(
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.width,
-                child: OverflowBox(
-                  alignment: Alignment.center,
-                  child: FittedBox(
-                    fit: BoxFit.fitWidth,
-                    child: CameraPreview(cameraController), // Отображаем видеопоток основной камеры внутри вырезанного квадрата
-                  ),
+                Positioned(
+                  top: 0,
+                  child: Container(
+                     width: context.width,
+                        height: context.height,
+                    child: FittedBox(
+                          fit: BoxFit.cover,
+                          child: Container(
+                            width: context.width,
+                        height: context.height,
+                            child: CameraPreview(cameraController)))),
                 ),
-              ),
-            ),
-          ),
-          // Container(
-          //   color: Colors.black.withOpacity(0.5), // Затемнение камеры (50% непрозрачности)
-          // ),
-          // Center(
-          //   child: Container(
-          //     width: MediaQuery.of(context).size.width, // Занимает всю ширину экрана
-          //     height: MediaQuery.of(context).size.height, // Занимает всю высоту экрана
-          //     color: Colors.white, // Цвет квадрата
-          //     child: CameraPreview(cameraController), // Отображаем камеру внутри светлого квадрата
-          //   ),
-          // ),
-      // Positioned(
-      //       left: 50, // Позиция по горизонтали
-      //       top: 50, // Позиция по вертикали
-      //       child: Container(
-      //         width: context.width,
-      //         height: context.width,
-      //         color: Colors.transparent, // Цвет контейнера
-      //       ),
-      //     ),       
-          
+                Container(
+                  color: Colors.black.withOpacity(
+                      0.8),
+                ),
+
+                Center(
+                      child: Container(
+                    width: context.width,
+                    height: context.width,
+                    child: ClipRect(
+                      child: OverflowBox(
+                        alignment: Alignment.center,
+                        child: FittedBox(
+                          fit: BoxFit.cover,
+                          child: Container(
+                            width: context.width,
+                            height: context.height,
+                            child: CameraPreview(cameraController),
+                          ),
+                        ),
+                      ),
+                    ),
+                  )),
+              
+
                 GestureDetector(
                   onTap: () {
                     setState(() {
@@ -141,7 +121,6 @@ class _CameraPageState extends State<CameraPage> {
                     alignment: Alignment.bottomCenter,
                     child: Container(
                       margin: const EdgeInsets.only(
-                        // left: 20,
                         bottom: 20,
                       ),
                       height: 50,
