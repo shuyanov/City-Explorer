@@ -29,7 +29,7 @@ City Adventures - это захватывающее мобильное прил�
 2. `npm ci`
 3. `docker-compose up -d`  
 4. `npx prisma migrate dev --name init` - делаем только один раз  
-5.  `npx prisma generate`  
+5. `npx prisma generate`  
 6. `npm run start:dev`
 
 
