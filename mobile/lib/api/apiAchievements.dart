@@ -1,12 +1,14 @@
 // http://localhost:3000/achievements
 
 import 'package:http/http.dart' as http;
-import 'package:test_hackaton/Model/PostModel.dart';
+import 'package:test_hackaton/Model/AchieveModel.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
 
 dynamic achievements;
   Future getAchievements() async {
     final url = Uri.parse(
-        'http://192.168.43.182:3000/achievements'); // Замените на реальный URL вашего сервера
+        "${dotenv.env['DB_URL']}/achievements");
 
     final response = await http.get(
       url,
@@ -16,7 +18,7 @@ dynamic achievements;
        achievements = achievementsFromJson(response.body);
          
           print(
-              "Successed write ===>>> getAchievements > ${achievements.toJson().toString()}");
+              "Successed write ===>>> getAchievements > ${achievements.first.name.toString()}");
 
           print("getAchievements: ${response.statusCode}");
       print('Геоданные успешно отправлены на сервер');
@@ -24,7 +26,7 @@ dynamic achievements;
       print('Ошибка при отправке геоданных на сервер');
     }
     }catch(e) {
-      print("exeption: ${e}");
+      print("exeption324: ${e}");
     }
     
   }

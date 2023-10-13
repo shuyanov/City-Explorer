@@ -48,6 +48,7 @@ dependencies:
   image_cropper: ^5.0.0
   cached_network_image: ^3.3.0
   http: ^1.1.0
+  flutter_dotenv: ^5.1.0
   
 
 dev_dependencies:
@@ -76,7 +77,8 @@ flutter:
   # assets:
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
-
+  assets:
+    - .env
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 

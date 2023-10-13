@@ -15,7 +15,7 @@ class PostPage extends StatefulWidget {
 
 class _PostPageState extends State<PostPage> {
   @override
-  void initState() async{
+  void initState(){
     onRefresh();
     super.initState();
   }
