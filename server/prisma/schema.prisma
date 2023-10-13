@@ -17,10 +17,10 @@ model Users {
 model Photos {
   id          Int    @id @default(autoincrement())
   description String
-  url_image   String @unique
+  url_image   String
   latitude    Int
   longitude   Int
-  city        String @unique
+  city        String
   Users       Users? @relation(fields: [usersId], references: [id])
   usersId     Int?
 }
