@@ -5,7 +5,7 @@ import 'package:test_hackaton/Model/AchieveModel.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 
-dynamic achievements;
+List<Achievements> achievements = [];
   Future getAchievements() async {
     final url = Uri.parse(
         "${dotenv.env['DB_URL']}/achievements");
