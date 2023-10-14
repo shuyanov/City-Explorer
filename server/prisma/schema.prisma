@@ -8,43 +8,35 @@ datasource db {
 }
 
 model Users {
-  id                Int                 @id @default(autoincrement())
-  User_photos       User_photos[]
-  User_achievements User_achievements[]
+  id                Int            @id @default(autoincrement())
+  name              String
+  user_photos       Photos[]
+  user_achievements Achievements[]
 }
 
 model Photos {
-  id            Int           @id @default(autoincrement())
-  description   String
-  url_image     String        @unique
-  latitude      Int
-  longitude     Int
-  city          String        @unique
-  user_photosId Int?
-  User_photos   User_photos[]
-}
-
-model User_photos {
-  id      Int    @id @default(autoincrement())
-  userId  Int
-  photoId Int
-  user    Users  @relation(fields: [userId], references: [id])
-  photo   Photos @relation(fields: [photoId], references: [id])
+  id          Int    @id @default(autoincrement())
+  description String
+  url_image   String
+  latitude    Int
+  longitude   Int
+  city        String
+  Users       Users? @relation(fields: [usersId], references: [id])
+  usersId     Int?
 }
 
 model Achievements {
-  id                Int                 @id @default(autoincrement())
-  name              String
-  description       String
-  User_achievements User_achievements[]
+  id            Int            @id @default(autoincrement())
+  name          String
+  description   String
+  usersId       Int?
+  Users         Users?         @relation(fields: [usersId], references: [id])
+  achievementPhotoId Int?
+  achievementPhoto AchievementPhoto? @relation(fields: [achievementPhotoId], references: [id])
 }
 
-model User_achievements {
-  id             Int          @id @default(autoincrement())
-  user           Users        @relation(fields: [usersId], references: [id])
-  achievements   Achievements @relation(fields: [achievementsId], references: [id])
-  current_value  Int
-  end_value      Int
-  usersId        Int
-  achievementsId Int
+model AchievementPhoto {
+  id        Int      @id @default(autoincrement())
+  url_image String   @unique
+  achievements Achievements[]
 }
