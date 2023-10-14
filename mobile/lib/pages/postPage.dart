@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:test_hackaton/api/apiPhoto.dart';
 import 'package:test_hackaton/util/post.dart';
 
 import '../api/apiAchievements.dart';
@@ -29,7 +30,19 @@ class _PostPageState extends State<PostPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListView(
+      body: FutureBuilder(
+        future: getPhotos(),
+        builder: (context, snapshot) {
+          return ListView.builder(
+            itemCount: photos.length,
+            itemBuilder: (context, index) {
+            return Post(userAvatar: "", user: "user1", image: photos[index].urlImage, like: false, about: photos[index].description);
+          },
+          
+          );
+        }
+      ),
+      /* ListView(
         children: [
           Post(userAvatar: "", user: "user1", image: 'https://cdn1.ozone.ru/s3/multimedia-0/6108964908.jpg', like: false, about: "about"),
           Post(userAvatar: "", user: "user2", image: 'https://cdn1.ozone.ru/s3/multimedia-0/6108964908.jpg', like: false, about: "about"),
@@ -38,7 +51,7 @@ class _PostPageState extends State<PostPage> {
           Post(userAvatar: "", user: "user2", image: 'https://cdn1.ozone.ru/s3/multimedia-0/6108964908.jpg', like: false, about: "about"),
           Post(userAvatar: "", user: "user1", image: 'https://cdn1.ozone.ru/s3/multimedia-0/6108964908.jpg', like: false, about: "about"),
         ],
-      ),
+      ), */
     );
   }
 }
